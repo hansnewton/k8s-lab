@@ -1,1 +1,3 @@
 .vagrant/
+worker-node-join-command
+manager-ip
