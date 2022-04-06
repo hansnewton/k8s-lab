@@ -22,4 +22,4 @@ To destroy all VMs: `vagrant destroy -f`
 ## Screenshots
 
 Expected results
-![Expected](https://github.com/hansnewton/k8s-lab/raw/main/screenshots/expected.png)
+![Expected](https://github.com/hansnewton/k8s-lab/raw/master/screenshots/expected.png)
