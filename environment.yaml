@@ -1,6 +1,6 @@
 ---
 - name: k8s-manager
-  box: bento/centos-7
+  box: bento/debian-10
   hostname: k8s-manager
   ipaddress: 192.168.56.3
   memory: 2048
@@ -8,7 +8,7 @@
   provision: provision/shell/k8s-manager.sh
 
 - name: k8s-worker01
-  box: bento/centos-7
+  box: bento/debian-10
   hostname: k8s-worker01
   ipaddress: 192.168.56.4
   memory: 2048
@@ -16,7 +16,7 @@
   provision: provision/shell/k8s-worker.sh
 
 - name: k8s-worker02
-  box: bento/centos-7
+  box: bento/debian-10
   hostname: k8s-worker02
   ipaddress: 192.168.56.5
   memory: 2048

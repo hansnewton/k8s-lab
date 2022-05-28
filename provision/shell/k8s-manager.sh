@@ -1,12 +1,12 @@
-# Fonte: https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos
+# sudo ufw allow 6443/tcp
+# sudo ufw allow 2379/tcp
+# sudo ufw allow 2380/tcp
+# sudo ufw allow 10250/tcp
+# sudo ufw allow 10251/tcp
+# sudo ufw allow 10252/tcp
+# sudo ufw allow 10255/tcp
+# sudo ufw reload
 
-# executar todos os comandos em modo privilegiado
-
-# How to Deploy a Kubernetes Cluster
-## Step 1: Create Cluster with kubeadm
-### kubeadm init --pod-network-cidr=10.244.0.0/16
-
-systemctl restart network
 systemctl restart docker
 systemctl restart kubelet
 
@@ -25,7 +25,6 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-#kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
 
 # worker node token
 kubeadm token create --print-join-command > /vagrant/worker-node-join-command

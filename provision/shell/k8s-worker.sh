@@ -1,8 +1,7 @@
-# Fonte: https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos
+# sudo ufw allow 10251/tcp
+# sudo ufw allow 10255/tcp
+# sudo ufw reload
 
-# executar todos os comandos em modo privilegiado
-
-systemctl restart network
 systemctl restart docker
 systemctl restart kubelet
 

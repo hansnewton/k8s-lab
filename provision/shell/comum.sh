@@ -1,19 +1,25 @@
-# Fonte: https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos
+apt install curl
 
-# executar todos os comandos em modo privilegiado
+apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+apt update
 
-systemctl stop firewalld
-systemctl disable firewalld
-ip a
-systemctl restart network
-
-# instalar apenas dependencias necessarias.
-yum install -y vim curl yum-utils device-mapper-persistent-data lvm2
-
-# install docker
-yum-config-manager -y --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum install -y docker-ce docker-ce-cli containerd.io
+apt install -y docker-ce
 systemctl enable docker --now
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+cat <<EOF | tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt update
+
+sed -i '/swap/d' /etc/fstab
+swapoff -a
+
+apt install -y kubelet kubeadm kubectl
+systemctl enable kubelet --now
 
 # etc/hosts
 cat <<EOF >> /etc/hosts
@@ -22,54 +28,17 @@ cat <<EOF >> /etc/hosts
 192.168.56.5 k8s-worker02
 EOF
 
-# install kubernetes
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-enabled=1
-gpgcheck=0
-repo_gpgcheck=0
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-EOF
-
-yum install -y kubelet kubeadm kubectl
-systemctl enable kubelet --now
-
-# Step 4: Configure Firewall
-
-
-# Step 5: Update Iptables Settings
-cat <<EOF > /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-EOF
-sysctl --system
-
-# Step 6: Disable SELinux
-setenforce 0
-sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-
-# Step 7: Disable SWAP
-sed -i '/swap/d' /etc/fstab
-swapoff -a
-
-# Resolvendo seguinte problema:
-# [kubelet-check] Initial timeout of 40s passed.
-# [kubelet-check] It seems like the kubelet isn't running or healthy.
-# [kubelet-check] The HTTP call equal to 'curl -sSL http://localhost:10248/healthz' failed with error: Get "http://localhost:10248/healthz": dial tcp [::1]:10248: connect: connection refused.
 cat <<EOF > /etc/docker/daemon.json
 {
     "exec-opts": ["native.cgroupdriver=systemd"]
 }
 EOF
 
-rm -f /etc/containerd/config.toml
+rm /etc/containerd/config.toml
 systemctl restart containerd
 
-systemctl daemon-reload
 systemctl restart docker
 systemctl restart kubelet
 
-
-
+systemctl status docker
+systemctl status kubelet
