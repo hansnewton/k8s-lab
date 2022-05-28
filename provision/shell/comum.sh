@@ -64,6 +64,9 @@ cat <<EOF > /etc/docker/daemon.json
 }
 EOF
 
+rm -f /etc/containerd/config.toml
+systemctl restart containerd
+
 systemctl daemon-reload
 systemctl restart docker
 systemctl restart kubelet
