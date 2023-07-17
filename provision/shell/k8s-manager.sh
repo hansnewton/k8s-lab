@@ -1,3 +1,5 @@
+#!/bin/bash
+set -x
 # sudo ufw allow 6443/tcp
 # sudo ufw allow 2379/tcp
 # sudo ufw allow 2380/tcp
@@ -28,3 +30,4 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 
 # worker node token
 kubeadm token create --print-join-command > /vagrant/worker-node-join-command
+set +x

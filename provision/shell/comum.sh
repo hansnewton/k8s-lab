@@ -1,3 +1,5 @@
+#!/bin/bash
+set -x
 apt update
 
 apt install -y curl apt-transport-https ca-certificates curl gnupg2 software-properties-common
@@ -44,3 +46,4 @@ systemctl restart kubelet
 
 systemctl status docker
 systemctl status kubelet
+set +x

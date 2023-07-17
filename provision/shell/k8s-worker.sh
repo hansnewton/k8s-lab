@@ -1,3 +1,5 @@
+#!/bin/bash
+set -x
 # sudo ufw allow 10251/tcp
 # sudo ufw allow 10255/tcp
 # sudo ufw reload
@@ -14,3 +16,4 @@ ${NODE_TOKEN}
 
 echo 'export PATH=$PATH:/usr/local/bin/' >> /root/.bashrc
 source /root/.bashrc
+set +x
