@@ -1,8 +1,7 @@
-# Fonte: https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos
-
 # executar todos os comandos em modo privilegiado
 
-systemctl restart network
+systemctl restart NetworkManager
+systemctl restart containerd
 systemctl restart docker
 systemctl restart kubelet
 

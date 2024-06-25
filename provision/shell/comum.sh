@@ -1,18 +1,13 @@
-# Fonte: https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos
-
 # executar todos os comandos em modo privilegiado
 
-systemctl stop firewalld
-systemctl disable firewalld
-ip a
-systemctl restart network
+yum update -y
 
 # instalar apenas dependencias necessarias.
-yum install -y vim curl yum-utils device-mapper-persistent-data lvm2
+yum install -y vim curl yum-utils device-mapper-persistent-data lvm2 iproute-tc git
 
 # install docker
-yum-config-manager -y --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum install -y docker-ce docker-ce-cli containerd.io
+yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 systemctl enable docker --now
 
 # etc/hosts
@@ -23,20 +18,18 @@ cat <<EOF >> /etc/hosts
 EOF
 
 # install kubernetes
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
 enabled=1
-gpgcheck=0
-repo_gpgcheck=0
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 
-yum install -y kubelet kubeadm kubectl
+yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 systemctl enable kubelet --now
-
-# Step 4: Configure Firewall
 
 
 # Step 5: Update Iptables Settings

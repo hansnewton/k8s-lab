@@ -1,12 +1,10 @@
-# Fonte: https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos
-
 # executar todos os comandos em modo privilegiado
 
 # How to Deploy a Kubernetes Cluster
 ## Step 1: Create Cluster with kubeadm
 ### kubeadm init --pod-network-cidr=10.244.0.0/16
 
-systemctl restart network
+systemctl restart NetworkManager
 systemctl restart docker
 systemctl restart kubelet
 
@@ -25,7 +23,6 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-#kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
 
 cat <<EOF > /run/flannel/subnet.env
 FLANNEL_NETWORK=10.244.0.0/16
