@@ -1,8 +1,8 @@
 # executar todos os comandos em modo privilegiado
 
 systemctl restart NetworkManager
-systemctl restart containerd
-systemctl restart docker
+#systemctl restart containerd
+#systemctl restart docker
 systemctl restart kubelet
 
 export WORKER_IP=$(ip a |grep global | grep -v '10.0.2.15' | grep -v docker0 | awk '{print $2}' | cut -f1 -d '/')

@@ -1,6 +1,6 @@
 # executar todos os comandos em modo privilegiado
 
-yum update -y
+#yum update -y
 
 # instalar apenas dependencias necessarias.
 yum install -y vim curl yum-utils device-mapper-persistent-data lvm2 iproute-tc git
